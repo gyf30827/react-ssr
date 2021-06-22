@@ -5,7 +5,8 @@ export default class About extends React.Component {
   render() {
     return (
       <div className="ablut">
-        about <Link to="/home"> home </Link>
+        <h3>about </h3>
+        <Link to="/home"> home </Link>
       </div>
     );
   }

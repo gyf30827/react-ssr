@@ -4,10 +4,6 @@ import { connect } from "react-redux";
 import Store from "./store";
 import "./index.less";
 class Home extends React.Component {
-  constructor(props) {
-    super();
-    this.isServer = props.__server__;
-  }
   static async getInitData(S, isServe = false) {
     const store = S[Store.namespace];
     store._updateServer_(isServe);
@@ -25,7 +21,9 @@ class Home extends React.Component {
     const { list, getList } = this.Store;
     return (
       <div className="home">
-        home <Link to="/about"> about </Link>
+        <h3>home</h3>
+        <Link to="/about"> about </Link>
+        <Link to="/home/detail"> detail </Link>
         <button
           onClick={() => {
             getList();

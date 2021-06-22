@@ -1,5 +1,5 @@
 import axios from "../../utils/axios";
-import storeFactory from "../../storeFactory";
+import storeFactory from "../../utils/storeFactory";
 export default storeFactory({
   namespace: "home",
   state: {
