@@ -1,0 +1,5 @@
+{
+  "watch": ["serve", "src"],
+  "exec": "npm run build && node ./dist/serve/index.js",
+  "ext": "js ts"
+}
