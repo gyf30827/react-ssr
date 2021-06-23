@@ -27,7 +27,9 @@ export const render = (req) => {
     }
     const content = renderToString(
       <Layout store={store}>
-        <StaticRouter location={req.path}>{<Component />}</StaticRouter>
+        <StaticRouter location={req.path}>
+          {Component && <Component />}
+        </StaticRouter>
       </Layout>
     );
     const title = (route || {}).title || "ssr",

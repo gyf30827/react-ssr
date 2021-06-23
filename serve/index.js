@@ -40,6 +40,10 @@ app.use((req, res, next) => {
 });
 
 app.get("*", async (req, res) => {
+  if (req.path === "/") {
+    res.redirect("/home");
+    return;
+  }
   const html = await render(req);
   res.send(html);
 });
