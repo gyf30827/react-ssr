@@ -6,7 +6,7 @@ const app = express();
 app.use(express.static("dist"));
 
 // 拦截api请求
-app.use((req, res, next) => {
+app.use(async (req, res, next) => {
   const path = req.path;
   if (/^\/api\//.test(path)) {
     const control = path.replace("/api/", "");
@@ -39,14 +39,7 @@ app.use((req, res, next) => {
   }
 });
 
-app.get("*", async (req, res) => {
-  if (req.path === "/") {
-    res.redirect("/home");
-    return;
-  }
-  const html = await render(req);
-  res.send(html);
-});
+app.use(render);
 
 const port = 5005;
 app.listen(port, (err) => {

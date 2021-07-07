@@ -1,10 +1,9 @@
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
-const HtmlWebpackPlugin = require("html-webpack-plugin");
 const path = require("path");
 module.exports = {
   entry: {
     index: "./src/index.js",
-    ssrIndex: "./src/ssrIndex.js",
+    simpleReact: "./src/simpleReact.js",
   },
   resolve: {
     extensions: [".js", ".ts", ".css", ".less", ".jsx", ".tsx"],
@@ -81,28 +80,5 @@ module.exports = {
     new MiniCssExtractPlugin({
       filename: "[name].css",
     }),
-    new HtmlWebpackPlugin(
-      Object.assign(
-        {},
-        {
-          inject: true,
-          template: "./index.html",
-        },
-        {
-          minify: {
-            removeComments: true,
-            collapseWhitespace: true,
-            removeRedundantAttributes: true,
-            useShortDoctype: true,
-            removeEmptyAttributes: true,
-            removeStyleLinkTypeAttributes: true,
-            keepClosingSlash: true,
-            minifyJS: true,
-            minifyCSS: true,
-            minifyURLs: true,
-          },
-        }
-      )
-    ),
   ],
 };

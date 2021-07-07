@@ -1,56 +1,50 @@
 import React from "react";
-import routes from "../src/router/config";
+import Router from "../src/router";
 import { renderToString } from "react-dom/server";
+import { Provider } from "react-redux";
 import { StaticRouter } from "react-router-dom";
-import Layout from "../src/components/layout";
 import ejs from "ejs";
 import * as path from "path";
-import { matchRoutes } from "react-router-config";
+import loadData from "./loadData";
 import createStore from "../src/store";
-
-export const render = (req) => {
+export const render = async (req, res) => {
   const store = createStore();
-  return new Promise(async (resolve, reject) => {
-    const matchedRoutes = matchRoutes(routes, req.path);
-    let Component = null,
-      route = null;
-    if (
-      matchedRoutes &&
-      matchedRoutes.length > 0 &&
-      matchedRoutes[0].route.component
-    ) {
-      Component = matchedRoutes[0].route.component;
-      route = matchedRoutes[0].route;
-      Component.getInitData &&
-        (await Component.getInitData(store.getState(), true));
-      Component.__server__ = true;
-    }
-    const content = renderToString(
-      <Layout store={store}>
-        <StaticRouter location={req.path}>
-          {Component && <Component />}
-        </StaticRouter>
-      </Layout>
-    );
-    const title = (route || {}).title || "ssr",
-      state = encodeURIComponent(JSON.stringify(store.getState()));
-    ejs.renderFile(
-      path.resolve(process.cwd(), "./dist/serve/index.html"),
-      {
-        content,
-        title,
-        state,
-      },
-      {
-        rmWhitespace: true,
-      },
-      (err, str) => {
-        if (err) {
-          reject(err);
-        } else {
-          resolve(str);
-        }
+  // 根据匹配路由组件拉取数据
+  const route = await loadData(req, store);
+  const context = {};
+  const content = renderToString(
+    <Provider store={store}>
+      <StaticRouter location={req.path} context={context}>
+        {Router}
+      </StaticRouter>
+    </Provider>
+  );
+  if (context.url) {
+    res.redirect(context.url);
+    return;
+  }
+  const title = (route || {}).title || "ssr",
+    state = encodeURIComponent(JSON.stringify(store.getState()));
+  ejs.renderFile(
+    path.resolve(process.cwd(), "./dist/serve/index.html"),
+    {
+      content,
+      title,
+      state,
+    },
+    {
+      rmWhitespace: true,
+    },
+    (err, str) => {
+      if (err) {
+        res.status(500).json({
+          success: false,
+          code: 500,
+          msg: "HTML转译失败",
+        });
+      } else {
+        res.send(str);
       }
-    );
-  });
+    }
+  );
 };

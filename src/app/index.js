@@ -2,14 +2,14 @@ import React from "react";
 import Router from "../router";
 import { BrowserRouter } from "react-router-dom";
 import createStore from "../store";
-import Layout from "../components/layout";
+import { Provider } from "react-redux";
 const store = createStore();
 export default class App extends React.Component {
   render() {
     return (
-      <Layout store={store}>
+      <Provider store={store}>
         <BrowserRouter>{Router}</BrowserRouter>
-      </Layout>
+      </Provider>
     );
   }
 }

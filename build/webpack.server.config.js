@@ -5,6 +5,8 @@ const CopyPlugin = require("copy-webpack-plugin");
 module.exports = {
   entry: {
     index: "./serve/index.js",
+    simple: "./serve/simple.js",
+    simpleReact: "./serve/simpleReact.js",
   },
   resolve: {
     extensions: [".js", ".ts", ".css", ".less", ".jsx", ".tsx"],

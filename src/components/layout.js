@@ -1,12 +1,12 @@
 import React from "react";
-import { Provider } from "react-redux";
+import { renderRoutes } from "react-router-config";
 export default class App extends React.Component {
   render() {
     return (
-      <Provider store={this.props.store}>
-        <div style={{ textAlign: "center" }}>我是头部</div>
-        {this.props.children}
-      </Provider>
+      <div>
+        <div style={{ textAlign: "center" }}>我是头部，哈哈哈</div>
+        {renderRoutes(this.props.route.routes)}
+      </div>
     );
   }
 }

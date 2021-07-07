@@ -15,6 +15,8 @@ class Home extends React.Component {
   componentDidMount() {
     if (!this.Store.__server__) {
       Home.getInitData(this.props);
+    } else {
+      this.Store._updateServer_(false);
     }
   }
   render() {
